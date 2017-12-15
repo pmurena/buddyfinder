@@ -1,22 +1,38 @@
+<div class="row" id="formErrors">
+    <div class="col-sm-8 col-sm-offset-2">
+        {{#each errors}}
+            <p class="bg-danger">{{this}}</p>
+        {{/each}}
+    </div>
+</div>
+
 <div id="registration-form">
     <div>
-        <h4>Registration - New User</h4>
+        <h4 class="col-sm-offset-2">Registration - New User</h4>
     </div>
-    <form action="/register" method='POST'>
-        <div class="form-control">
-            <label for="username">Username: </label>
-            <input type="text" name="username">
+    <form action="/register" class="form-horizontal" method='POST'>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="username">Username: </label>
+            <div class="col-sm-10">
+                <input type="text" name="username" value="{{values.username}}">
+            </div>
         </div>
-        <div class="form-control">
-            <label for="username">Email: </label>
-            <input type="text" name="username">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="email">Email: </label>
+            <div class="col-sm-10">
+                <input type="text" name="email" value="{{values.email}}">
+            </div>
         </div>
-        <div class="form-control">
-            <label for="password">Password:</label>
-            <input type="password" name="password">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="password">Password:</label>
+            <div class="col-sm-10">
+                <input type="password" name="password" value="{{values.password}}">
+            </div>
         </div>
-        <div class="form-control">
-            <input type="submit" value="Submit">
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-default" type="submit">Register</button>
+            </div>
         </div>
     </form>
 </div>
