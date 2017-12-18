@@ -1,6 +1,29 @@
 <div class="list-group">
     <h3 class="list-group-item-heading">{{activity.name}}</h3>
-    <span class="stars">{{activity.stars}} ★</span>
+    <span class="stars">{{activity.popularity}} ★</span>
     <p class="list-group-item-text">{{activity.description}}</p>
-    <a class="star-button" href="/recipes/{{activity.id}}/star">★ Star this recipe ★</a>
+    <p class="list-group-item-text">Date: {{activity.date}}</p>
+    <p class="list-group-item-text">Time: {{activity.time}}</p>
+    <p class="list-group-item-text">Location: {{activity.location}}</p>
+    {{#each activity.users}}
+        <span>{{this.user}}  -  </span>
+    {{/each}}
+
+    {{#if alreadySignedUp}}
+        <form action="/activities/{{{activity._id}}}/signOff" method="POST">
+            <input type="submit" class="btn-danger signUp-button" value="Sign Off">
+        </form>
+    {{else}}
+        <form action="/activities/{{{activity._id}}}/signUp" method="POST">
+            <input type="submit" class="btn-success signUp-button" value="Sign Up">
+        </form>
+    {{/if}}
+
+    <form action="/activities/{{{activity._id}}}/upvoteActivity" method="POST">
+        <input type="submit" class="star-button" value="★ Upvote this activity ★">
+    </form>
+    <form action="/activities/{{{activity._id}}}/downvoteActivity" method="POST">
+        <input type="submit" class="star-button" value="★ Downvote this activity ★">
+    </form>
+
 </div>

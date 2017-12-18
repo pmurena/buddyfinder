@@ -1,20 +1,48 @@
 'use strict';
 
-const Activities = require('../handlers/api_activities');
+const ApiActivities = require('../handlers/api_activities');
 
 module.exports = [{
     method: 'GET',
     path: '/api/activities',
-    handler: Activities.getAll
+    handler: ApiActivities.getAll
 }, {
     method: 'GET',
     path: '/api/activities/{name}',
-    handler: Activities.getOne
+    handler: ApiActivities.getOne
 }, {
     method: 'POST',
     path: '/api/activities',
+    handler: ApiActivities.createOne,
     config: {
         auth: 'api'
-    },
-    handler: Activities.createOne
+    }
+}, {
+    method: 'POST',
+    path: '/api/activities/{_id}/upvoteActivity',
+    handler: ApiActivities.upvoteActivity,
+    config: {
+        auth: 'api'
+    }
+}, {
+    method: 'POST',
+    path: '/api/activities/{_id}/downvoteActivity',
+    handler: ApiActivities.downvoteActivity,
+    config: {
+        auth: 'api'
+    }
+}, {
+    method: 'POST',
+    path: '/api/activities/{_id}/signUp',
+    handler: ApiActivities.signUp,
+    config: {
+        auth: 'api'
+    }
+}, {
+    method: 'POST',
+    path: '/api/activities/{_id}/signOff',
+    handler: ApiActivities.signOff,
+    config: {
+        auth: 'api'
+    }
 }];
