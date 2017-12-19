@@ -1,7 +1,20 @@
 'use strict';
 
+/**
+ * This part of the application is responsible for the webpage shown to the user through her
+ * webbrowser. It consumes the API written for this application. That makes it much more
+ * modular. The mobile application and the webpage both consume the same API and render the
+ * required information in their own way.
+ */
+
 const Wreck = require('wreck');
 
+/**
+ * Retrieves one activity through API (wreck)
+ *
+ * @param request.auth.credentials.token needs to be set with the users token
+ * @param reply
+ */
 exports.getOne = function (request, reply) {
 
     const token = request.auth.credentials.token;
@@ -48,6 +61,12 @@ exports.getOne = function (request, reply) {
 
 };
 
+/**
+ * Displays the create activity form
+ *
+ * @param request
+ * @param reply
+ */
 exports.createActivity = function (request, reply) {
 
     // it uses the layout for all views, and adds the required handlebars as needed
@@ -57,6 +76,13 @@ exports.createActivity = function (request, reply) {
     });
 };
 
+/**
+ * Upvotes the activity through API call
+ *
+ * @param request.auth.credentials.token needs to be set to the logged in user's token
+ * @param request.params._id needs to be set to the activities id
+ * @param reply
+ */
 exports.upvoteActivity = function (request, reply) {
 
     const token = request.auth.credentials.token;
@@ -67,7 +93,7 @@ exports.upvoteActivity = function (request, reply) {
     console.log("apiUrl: " + apiUrl);
 
     Wreck.post(apiUrl, {
-        payload: JSON.stringify(request.payload),
+        payload: JSON.stringify({userToken: token}),
         json: true,
         headers: {
             'Authorization': 'Bearer ' + token
@@ -85,6 +111,13 @@ exports.upvoteActivity = function (request, reply) {
     });
 };
 
+/**
+ * Downvotes the activity through API call
+ *
+ * @param request.auth.credentials.token needs to be set to the logged in user's token
+ * @param request.params._id needs to be set to the activities id
+ * @param reply
+ */
 exports.downvoteActivity = function (request, reply) {
 
     const token = request.auth.credentials.token;
@@ -95,7 +128,7 @@ exports.downvoteActivity = function (request, reply) {
     console.log("apiUrl: " + apiUrl);
 
     Wreck.post(apiUrl, {
-        payload: JSON.stringify(request.payload),
+        payload: JSON.stringify({userToken: token}),
         json: true,
         headers: {
             'Authorization': 'Bearer ' + token
@@ -113,6 +146,13 @@ exports.downvoteActivity = function (request, reply) {
     });
 };
 
+/**
+ * Signs up the currently logged in user for an activity
+ *
+ * @param request.auth.credentials.token needs to be set to the logged in user's token
+ * @param request.params._id needs to be set to the activities id
+ * @param reply
+ */
 exports.signUp = function (request, reply) {
 
     const token = request.auth.credentials.token;
@@ -135,6 +175,12 @@ exports.signUp = function (request, reply) {
     })
 };
 
+/**
+ * Signs off the currently logged in user from an activity
+ *
+ * @param request
+ * @param reply
+ */
 exports.signOff = function (request, reply) {
 
     const token = request.auth.credentials.token;
