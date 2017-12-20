@@ -60,6 +60,7 @@ exports.login = function (request, reply) {
 /**
  * Register a new user
  *
+ * @param request
  * @param request.payload needs to be the JSON object of a user.
  * @param reply
  *
@@ -87,5 +88,24 @@ exports.register = function (request, reply) {
             }
             reply(user);
         });
+    });
+};
+
+exports.myProfile = function (request, reply) {
+    console.log("inside API myProfile");
+    console.log(request.payload);
+
+    this.db.users.findOne({token: request.payload.userToken}, (err, user) => {
+        if (err) {
+            // TODO: does not display if it happens.... it goes to reply(doc) furhter down ;(
+            return reply(Boom.badData(err, 'Internal MongoDB error'));
+        }
+        if (!user) {
+            return reply(Boom.notFound());
+        }
+
+        console.log("so far so good");
+        console.log(user);
+        reply(user);
     });
 };

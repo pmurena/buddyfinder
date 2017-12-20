@@ -12,6 +12,7 @@ const Wreck = require('wreck');
 /**
  * Retrieves one activity through API (wreck)
  *
+ * @param request
  * @param request.auth.credentials.token needs to be set with the users token
  * @param reply
  */
@@ -35,8 +36,8 @@ exports.getOne = function (request, reply) {
         // checks if there is an array of users signed up for the activity and
         // parses it for logged in users. Changes alreadySigendUp if logged in
         // user is in this array. This is needed for buttons in handlebars template
-        var alreadySignedUp = false;
-        if(payload.users != undefined) {
+        let alreadySignedUp = false;
+        if(payload.users !== undefined) {
             for(var index = 0; index < payload.users.length; index++) {
                 if(token === payload.users[index].token) {
                     alreadySignedUp = true;
@@ -79,6 +80,7 @@ exports.createActivity = function (request, reply) {
 /**
  * Upvotes the activity through API call
  *
+ * @param request
  * @param request.auth.credentials.token needs to be set to the logged in user's token
  * @param request.params._id needs to be set to the activities id
  * @param reply
@@ -114,6 +116,7 @@ exports.upvoteActivity = function (request, reply) {
 /**
  * Downvotes the activity through API call
  *
+ * @param request
  * @param request.auth.credentials.token needs to be set to the logged in user's token
  * @param request.params._id needs to be set to the activities id
  * @param reply
@@ -149,6 +152,7 @@ exports.downvoteActivity = function (request, reply) {
 /**
  * Signs up the currently logged in user for an activity
  *
+ * @param request
  * @param request.auth.credentials.token needs to be set to the logged in user's token
  * @param request.params._id needs to be set to the activities id
  * @param reply
