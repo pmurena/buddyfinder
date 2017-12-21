@@ -4,7 +4,8 @@ const Wreck = require('wreck');
 
 exports.login = function (request, reply) {
     
-    const apiUrl = this.apiBaseUrl + '/login';
+    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api/login';
+    console.log(request.payload);
 
     Wreck.post(apiUrl, {
         payload: JSON.stringify(request.payload),
@@ -18,19 +19,19 @@ exports.login = function (request, reply) {
         }
 
         if (res.statusCode !== 200) {
-            return reply.redirect(this.webBaseUrl + '/login');
+            return reply.redirect(apiUrl);
         }
 
         request.cookieAuth.set({
             token: payload.token
         });
-        reply.redirect(this.webBaseUrl);
+        reply.redirect('http://blooming-fortress-94706.herokuapp.com');
     });
 };
 
 exports.createActivity = function (request, reply) {
 
-    const apiUrl = this.apiBaseUrl + '/activities';
+    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/activities';
 
     const token = request.auth.credentials.token;
 
@@ -45,13 +46,13 @@ exports.createActivity = function (request, reply) {
             throw err;
         }
 
-        reply.redirect(this.webBaseUrl);
+        reply.redirect('http://blooming-fortress-94706.herokuapp.com');
     });
 };
 
 exports.register = function (request, reply) {
 
-    const apiUrl = this.apiBaseUrl + '/register';
+    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/register';
 
     Wreck.post(apiUrl, {
         payload: JSON.stringify(request.payload),
@@ -60,7 +61,7 @@ exports.register = function (request, reply) {
         if(err) {
             throw err;
         }
-        reply.redirect(this.webBaseUrl + '/login');
+        reply.redirect('http://blooming-fortress-94706.herokuapp.com' + '/login');
     })
 
 }
@@ -68,12 +69,12 @@ exports.register = function (request, reply) {
 exports.logout = function (request, reply) {
 
     request.cookieAuth.clear();
-    reply.redirect(this.webBaseUrl);
+    reply.redirect('http://blooming-fortress-94706.herokuapp.com');
 };
 
 exports.editMyProfile = function (request, reply) {
 
-    const apiUrl = this.apiBaseUrl + '/myProfile/edit';
+    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/myProfile/edit';
 
     const token = request.auth.credentials.token;
 

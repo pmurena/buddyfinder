@@ -7,7 +7,7 @@ const mongojs = require('mongojs');
 const mongoDBconnectionURL = "mongodb://Jonny:TheFearless@ds237475.mlab.com:37475/buddyfinder";
 
 const server = new Hapi.Server();
-server.connection({port : process.env.PORT ||3000 });
+server.connection({port : process.env.PORT || 3000 });
 
 const collections = ['activity', 'users'];
 server.app.db = mongojs(mongoDBconnectionURL, collections);  //<--- Added
@@ -21,10 +21,15 @@ server.app.db.on('connect', function() {
 });
 
 server.bind({
+    //apiBaseUrl: server.info.uri + '/api',
+    //webBaseUrl: server.info.uri,
     apiBaseUrl: 'http://localhost:3000/api',
     webBaseUrl: 'http://localhost:3000',
     db: server.app.db
 });
+
+console.log(this.apiBaseUrl);
+console.log(this.webBaseUrl);
 
 const validateFunc = function (token, callback) {
     server.app.db.users.findOne({
@@ -117,5 +122,7 @@ server.register([{
             throw err;
         }
         server.log('info', 'Server running at: ' + server.info.uri);
+        console.log(server.info.host);
+        console.log(server.info.uri);
     });
 });

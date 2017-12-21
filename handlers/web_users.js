@@ -18,11 +18,11 @@ const Wreck = require('wreck');
 exports.home = function (request, reply) {
 
     // http://localhost:3000/api/activities
-    const apiUrl = this.apiBaseUrl + '/activities';
+    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/activities';
 
     // Wreck is used to fetch the JSON and parse it. Big advantage is, that it is
     // correctly parsed and can be used as payload.
-    Wreck.get(apiUrl, { json: true }, (err, res, payload) => {
+    Wreck.get('http://blooming-fortress-94706.herokuapp.com/api/activities', { json: true }, (err, res, payload) => {
 
         if (err) {
             throw err;
@@ -74,10 +74,7 @@ exports.myProfile = function (request, reply) {
     const token = request.auth.credentials.token;
 
     // http://localhost:3000/api/activities
-    const apiUrl = this.apiBaseUrl + '/myProfile';
-    console.log(apiUrl);
-    console.log(token);
-    console.log("************");
+    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/myProfile';
 
     // Wreck is used to fetch the JSON and parse it. Big advantage is, that it is
     // correctly parsed and can be used as payload.
@@ -118,7 +115,7 @@ exports.editMyProfile = function (request, reply) {
     const token = request.auth.credentials.token;
 
     // http://localhost:3000/api/activities
-    const apiUrl = this.apiBaseUrl + '/myProfile';
+    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/myProfile';
 
     // Wreck is used to fetch the JSON and parse it. Big advantage is, that it is
     // correctly parsed and can be used as payload.
