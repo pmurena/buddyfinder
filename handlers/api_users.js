@@ -123,6 +123,12 @@ exports.register = function (request, reply) {
     });
 };
 
+/**
+ * Displays the myProfile of the logged in user
+ *
+ * @param request
+ * @param reply
+ */
 exports.myProfile = function (request, reply) {
 
     this.db.users.findOne({token: request.payload.userToken}, (err, user) => {
@@ -137,10 +143,15 @@ exports.myProfile = function (request, reply) {
     });
 };
 
+/**
+ * Copies and updates the user from the form input. Where no input is given, the current
+ * values are copied from database before they are written back to it.
+ *
+ * @param request
+ * @param reply
+ */
 exports.editMyProfile = function(request, reply) {
 
-    console.log("AT LEAST IN THE RIGHT PLACE::::");
-    console.log(request.payload);
     this.db.users.findOne({token: request.payload.token}, (err, user) => {
         if (err) {
             // TODO: does not display if it happens.... it goes to reply(doc) furhter down ;(
@@ -149,8 +160,6 @@ exports.editMyProfile = function(request, reply) {
         if (!user) {
             return reply(Boom.notFound());
         }
-
-        console.log(request.payload);
 
         let userID = user._id;
         let userName = user.username;
@@ -164,13 +173,7 @@ exports.editMyProfile = function(request, reply) {
         let userPhone = request.payload.phone;
         let userPassword = user.password;
         let userToken = user.token;
-
-        console.log(userID);
-        console.log(userName);
-        console.log(userFirstname);
-        console.log(userDescription);
-        console.log(userEmail);
-        console.log(userToken);
+        let userPicture = user.picture;
 
 
         if(request.payload.password !== '') {
@@ -182,8 +185,6 @@ exports.editMyProfile = function(request, reply) {
             });
         }
 
-
-        console.log(" END USER API...");
         this.db.users.findAndModify({query: {token: userToken},
             update: {_id: userID,
                     username: userName,
@@ -196,7 +197,8 @@ exports.editMyProfile = function(request, reply) {
                     website: userWebsite,
                     phone: userPhone,
                     password: userPassword,
-                    token: userToken
+                    token: userToken,
+                    picture: userPicture
                     }}, (err, user) => {
             if (err) {
                 // TODO: does not display if it happens.... it goes to reply(doc) furhter down ;(
@@ -207,8 +209,24 @@ exports.editMyProfile = function(request, reply) {
             }
             reply(user);
         });
-
     });
+};
 
-
+/**
+ * shows the public profile page of user specified in pramas (URL)
+ *
+ * @param request
+ * @param reply
+ */
+exports.publicProfile = function (request, reply) {
+    this.db.users.findOne({_id: request.params._id}, (err, user) => {
+        if (err) {
+            // TODO: does not display if it happens.... it goes to reply(doc) furhter down ;(
+            return reply(Boom.badData(err, 'Internal MongoDB error'));
+        }
+        if (!user) {
+            return reply(Boom.notFound());
+        }
+        reply(user);
+    });
 };

@@ -2,17 +2,28 @@
 
 const Wreck = require('wreck');
 
+const heroku_mode = true;
+
+/**
+ * Login function
+ *
+ * @param request
+ * @param reply
+ */
 exports.login = function (request, reply) {
-    
-    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api/login';
-    console.log(request.payload);
+
+    // FIXME
+    let apiUrl = '';
+    if(heroku_mode) {
+        apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api/login';
+    } else {
+        apiUrl = this.apiBaseUrl + '/login';
+    }
 
     Wreck.post(apiUrl, {
         payload: JSON.stringify(request.payload),
         json: true
     }, (err, res, payload) => {
-
-        console.log(payload);
 
         if (err) {
             throw err;
@@ -25,13 +36,31 @@ exports.login = function (request, reply) {
         request.cookieAuth.set({
             token: payload.token
         });
-        reply.redirect('http://blooming-fortress-94706.herokuapp.com');
+        // FIXME
+        if(heroku_mode) {
+            reply.redirect('http://blooming-fortress-94706.herokuapp.com');
+        } else {
+            reply.redirect(this.webBaseUrl);
+        }
     });
 };
 
+/**
+ * Creates the activity from form data
+ *
+ * @param request
+ * @param reply
+ */
 exports.createActivity = function (request, reply) {
 
-    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/activities';
+    // FIXME
+    let apiUrl = '';
+    if(heroku_mode) {
+        apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/activities';
+    } else {
+        apiUrl = this.apiBaseUrl + '/activities';
+    }
+
 
     const token = request.auth.credentials.token;
 
@@ -45,14 +74,30 @@ exports.createActivity = function (request, reply) {
         if (err) {
             throw err;
         }
+        // FIXME
+        if(heroku_mode) {
+            reply.redirect('http://blooming-fortress-94706.herokuapp.com');
+        } else {
+            reply.redirect(this.webBaseUrl);
+        }
 
-        reply.redirect('http://blooming-fortress-94706.herokuapp.com');
     });
 };
 
+/**
+ * Register a new user from form data
+ *
+ * @param request
+ * @param reply
+ */
 exports.register = function (request, reply) {
-
-    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/register';
+    // FIXME
+    let apiUrl = '';
+    if(heroku_mode) {
+        apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api/register';
+    } else {
+        apiUrl = this.apiBaseUrl + '/register';
+    }
 
     Wreck.post(apiUrl, {
         payload: JSON.stringify(request.payload),
@@ -61,20 +106,49 @@ exports.register = function (request, reply) {
         if(err) {
             throw err;
         }
-        reply.redirect('http://blooming-fortress-94706.herokuapp.com' + '/login');
+        // FIXME
+        if(heroku_mode) {
+            reply.redirect('http://blooming-fortress-94706.herokuapp.com/login');
+        } else {
+            reply.redirect(this.webBaseUrl + '/login');
+        }
     })
 
-}
+};
 
+/**
+ * Log out the user - delete it's session
+ *
+ * @param request
+ * @param reply
+ */
 exports.logout = function (request, reply) {
 
     request.cookieAuth.clear();
-    reply.redirect('http://blooming-fortress-94706.herokuapp.com');
+    // FIXME
+    if(heroku_mode) {
+        reply.redirect('http://blooming-fortress-94706.herokuapp.com');
+    } else {
+        reply.redirect(this.webBaseUrl);
+    }
 };
 
+/**
+ * Edit profile of logged in user
+ *
+ * @param request
+ * @param reply
+ */
 exports.editMyProfile = function (request, reply) {
 
-    const apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/myProfile/edit';
+    // FIXME
+    let apiUrl = '';
+    if(heroku_mode) {
+        apiUrl = 'http://blooming-fortress-94706.herokuapp.com/api' + '/myProfile/edit';
+    } else {
+        apiUrl = this.apiBaseUrl + '/myProfile/edit';
+    }
+
 
     const token = request.auth.credentials.token;
 
@@ -88,10 +162,8 @@ exports.editMyProfile = function (request, reply) {
         }
     }, (err, res, payload) => {
         if (err) {
-            console.log("THROWING ERROR");
             throw err;
         }
-        console.log("AFTER ACTIONS EDIT PROFILE");
         reply.redirect("/myProfile");
     });
 };
